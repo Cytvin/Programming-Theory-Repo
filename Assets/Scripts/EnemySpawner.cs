@@ -18,8 +18,10 @@ public class EnemySpawner : MonoBehaviour
     {
         while (true) 
         {
-            GameObject enemy = Instantiate(_enemyPrefab, GenerateSpawnPosition(), _enemyPrefab.transform.rotation);
-            enemy.transform.LookAt(_player.transform.position);
+            Enemy enemy = Instantiate(_enemyPrefab, GenerateSpawnPosition(), _enemyPrefab.transform.rotation).GetComponent<Enemy>();
+            enemy.SetPlayerPosition(_player.transform.position);
+
+            enemy.IsDead += _player.GetComponent<Player>().KillEnemy;
 
             yield return new WaitForSeconds(_spawnRate);
         }

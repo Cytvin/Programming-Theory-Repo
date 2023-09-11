@@ -1,32 +1,62 @@
 using UnityEngine;
 
+// INHERITANCE
 public class WaveWeapon : Weapon
 {
     [SerializeField] private GameObject _wavePrefab;
-    private GameObject _lastWave;
-    private float _nextShoot = 0;
+    private Wave _wave;
+    private bool _canShoot = true;
+
+    private void Awake()
+    {
+        GameObject wave = Instantiate(_wavePrefab, transform.position, _wavePrefab.transform.rotation);
+        _wave = wave.GetComponent<Wave>();
+        _wave.SetMaxScale(AttackRange * 2);
+        _wave.ScaleCompleted += OnCanShoot;
+    }
+
+    private void OnDestroy()
+    {
+        _wave.ScaleCompleted -= OnCanShoot;
+    }
 
     public override void Use()
     {
-        if (_nextShoot > Time.time)
+        if (_canShoot == false)
         {
             return;
         }
 
-        DestroyLastWave();
-        SpawnNewWave();
-        _nextShoot = Time.time + AttackSpeed;
+        _wave.StartWave(Damage);
+        _canShoot = false;
     }
 
-    private void SpawnNewWave()
+    public override void Upgrade()
     {
-        _lastWave = Instantiate(_wavePrefab, transform.position, _wavePrefab.transform.rotation);
-        Wave wave = _lastWave.GetComponent<Wave>();
-        wave.SetDamage(Damage);
+        SetDamage(Damage + 2);
+        SetAttackRange(AttackRange + 0.5f);
+        SetUpgradeCoast(UpgradeCoast + 15);
     }
 
-    private void DestroyLastWave()
+    public override string GetWeaponName()
     {
-        Destroy(_lastWave);
+        return "Wave Weapon";
+    }
+
+    public override string GetWeaponData()
+    {
+        return $"Damage: {Damage}\nAttack Range: {AttackRange}\nUpgrade Coast: {UpgradeCoast}";
+    }
+
+    private void OnCanShoot(bool canShoot)
+    {
+        _canShoot = canShoot;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawWireSphere(transform.position, AttackRange);
     }
 }
