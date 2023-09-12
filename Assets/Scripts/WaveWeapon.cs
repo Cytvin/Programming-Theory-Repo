@@ -13,6 +13,7 @@ public class WaveWeapon : Weapon
         _wave = wave.GetComponent<Wave>();
         _wave.SetMaxScale(AttackRange * 2);
         _wave.ScaleCompleted += OnCanShoot;
+        SetUpgradeCoast(30);
     }
 
     private void OnDestroy()
@@ -33,9 +34,9 @@ public class WaveWeapon : Weapon
 
     public override void Upgrade()
     {
-        SetDamage(Damage + 2);
-        SetAttackRange(AttackRange + 0.5f);
-        SetUpgradeCoast(UpgradeCoast + 15);
+        SetDamage(Damage + 1);
+        SetAttackRange(AttackRange + 0.25f);
+        SetUpgradeCoast(UpgradePrice + 35);
     }
 
     public override string GetWeaponName()
@@ -45,7 +46,7 @@ public class WaveWeapon : Weapon
 
     public override string GetWeaponData()
     {
-        return $"Damage: {Damage}\nAttack Range: {AttackRange}\nUpgrade Coast: {UpgradeCoast}";
+        return $"Damage: {Damage}\nAttack Range: {AttackRange}";
     }
 
     private void OnCanShoot(bool canShoot)

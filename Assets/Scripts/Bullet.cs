@@ -4,6 +4,7 @@ public class Bullet : MonoBehaviour
 {
     private GameObject _target;
     private int _damage = 0;
+    private float _speed = 10f;
 
     private void Update()
     {
@@ -16,7 +17,7 @@ public class Bullet : MonoBehaviour
         transform.LookAt(_target.transform.position);
         transform.Rotate(-90, 0, 0);
 
-        transform.Translate(Vector3.down * 10f * Time.deltaTime);
+        transform.Translate(Vector3.down * _speed * Time.deltaTime);
     }
 
     // ENCAPSULATION

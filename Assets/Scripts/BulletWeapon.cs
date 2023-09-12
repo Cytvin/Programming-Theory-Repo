@@ -35,8 +35,8 @@ public class BulletWeapon : Weapon
     {
         SetAttackDelay(_attackDelay - 0.1f);
         SetDamage(Damage + 1);
-        SetAttackRange(AttackRange + 0.5f);
-        SetUpgradeCoast(UpgradeCoast + 15);
+        SetAttackRange(AttackRange + 0.1f);
+        SetUpgradeCoast(UpgradePrice + 15);
     }
 
     public override string GetWeaponName()
@@ -46,7 +46,7 @@ public class BulletWeapon : Weapon
 
     public override string GetWeaponData()
     {
-        return $"Damage: {Damage}\nAttack Range: {AttackRange}\nAttack Delay: {_attackDelay}\nUpgrade Coast: {UpgradeCoast}";
+        return $"Damage: {Damage}\nAttack Range: {AttackRange}\nAttack Delay: {_attackDelay}";
     }
 
     private void SetAttackDelay(float attackDelay)

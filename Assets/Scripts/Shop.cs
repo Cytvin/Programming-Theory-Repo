@@ -1,28 +1,42 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Shop : MonoBehaviour
 {
-    [SerializeField] private Player _player;
     private List<GameObject> _buyableWeapons;
+    private int _weaponCoast = 5;
+
+    public event Action<int> WeaponCoastChanged;
+    public event Action<int> WeaponsCountChanged;
+
+    public int WeaponCoast => _weaponCoast; 
+    public int WeaponCount => _buyableWeapons.Count;
 
     private void Start()
     {
         InitializeBuyableWeaponsList();
     }
 
-    public void BuyWeapon()
+    public Weapon BuyWeapon(Transform playerTransform)
     {
-        if (_buyableWeapons.Count == 0)
-        {
-            return;
-        }
-
         _buyableWeapons[0].SetActive(true);
-        _buyableWeapons[0].transform.parent = _player.transform;
+        _buyableWeapons[0].transform.parent = playerTransform.transform;
 
-        _player.AddWeapon(_buyableWeapons[0].GetComponent<Weapon>());
+        Weapon weapon = _buyableWeapons[0].GetComponent<Weapon>();
+
         _buyableWeapons.Remove(_buyableWeapons[0]);
+
+        ChangeWeaponCoast();
+
+        WeaponsCountChanged?.Invoke(_buyableWeapons.Count);
+        return weapon;
+    }
+
+    private void ChangeWeaponCoast()
+    {
+        _weaponCoast += 100;
+        WeaponCoastChanged?.Invoke(_weaponCoast);
     }
 
     private void InitializeBuyableWeaponsList()

@@ -11,7 +11,7 @@ public abstract class Weapon : MonoBehaviour
     // ENCAPSULATION
     public int Damage => _damage;
     public float AttackRange => _attackRange;
-    public int UpgradeCoast => _upgradeCoast;
+    public int UpgradePrice => _upgradeCoast;
 
     // ENCAPSULATION
     public virtual void SetDamage(int damage)
@@ -21,7 +21,7 @@ public abstract class Weapon : MonoBehaviour
     // ENCAPSULATION
     public virtual void SetAttackRange(float attackRange)
     {
-        _attackRange = attackRange;
+        _attackRange = Mathf.Round(attackRange * 100) * 0.01f;
     }
 
     public virtual void SetUpgradeCoast(int upgradeCoast)

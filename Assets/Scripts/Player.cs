@@ -10,6 +10,11 @@ public class Player : MonoBehaviour
     public event Action<List<Weapon>> WeaponsListChanged;
     public event Action<int> MoneyCountChanged;
 
+    public void Start()
+    {
+        _money = 5;
+    }
+
     private void Update()
     {
         foreach (var weapon in _weapons) 
@@ -25,16 +30,20 @@ public class Player : MonoBehaviour
         WeaponsListChanged?.Invoke(_weapons);
     }
 
-    public bool TryGetMoney(int money)
+    public bool TryBuy(int money)
     {
         if (_money - money < 0)
         {
             return false;
         }
 
+        return true;
+    }
+
+    public void Buy(int money)
+    {
         _money -= money;
         MoneyCountChanged?.Invoke(_money);
-        return true;
     }
 
     public void KillEnemy(int money)

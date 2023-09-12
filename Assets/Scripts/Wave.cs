@@ -62,6 +62,8 @@ public class Wave : MonoBehaviour
             Enemy enemy = other.GetComponent<Enemy>();
 
             enemy.ApplyDamage(Damage);
+
+            enemy.SlowDown(0.4f, 2);
         }
     }
 }

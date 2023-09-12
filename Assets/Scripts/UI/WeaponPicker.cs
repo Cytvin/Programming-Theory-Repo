@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class WeaponPicker : MonoBehaviour
 {
@@ -24,17 +22,19 @@ public class WeaponPicker : MonoBehaviour
 
         foreach (Weapon weapon in weapons) 
         {
-            Button button = Instantiate(_buttonPrefab, transform).GetComponent<Button>();
+            BuyButton button = Instantiate(_buttonPrefab, transform).GetComponent<BuyButton>();
 
-            TextMeshProUGUI buttonText = button.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+            button.SetTitle(weapon.GetWeaponName());
+            button.SetPrice(weapon.UpgradePrice.ToString());
 
-            buttonText.SetText($"Upgrade\n{weapon.GetWeaponName()}");
-
-            button.onClick.AddListener(() =>
+            button.AddListener(() =>
             {
-                if (_player.TryGetMoney(weapon.UpgradeCoast))
+                if (_player.TryBuy(weapon.UpgradePrice))
                 {
+                    _player.Buy(weapon.UpgradePrice);
                     weapon.Upgrade();
+
+                    button.SetPrice(weapon.UpgradePrice.ToString());
                 }
 
                 WeaponDisplayer.Instance.DisplayWeapon(weapon.GetWeaponName(), weapon.GetWeaponData());
